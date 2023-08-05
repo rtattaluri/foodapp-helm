@@ -1,0 +1,10 @@
+primary:
+   persistence:
+     enabled: false
+auth:
+  createDatabase: true 
+  database: "db_restaurant"
+  rootPassword: "secret"
+
+networkPolicy:
+  allowExternal: false

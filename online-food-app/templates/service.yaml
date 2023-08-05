@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "online-food-app-backend.fullname" . }}
+  labels:
+    {{- include "online-food-app-backend.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.backendport }}
+      targetPort: {{ .Values.service.backendtargetPort }}
+      nodePort: {{ .Values.service.backendnodePort }}
+      protocol: TCP
+      name: http-backend
+    - port: {{ .Values.service.port }}
+      targetPort: {{ .Values.service.targetPort }}
+      nodePort: {{ .Values.service.nodePort }}
+      protocol: TCP
+      name: http
+  internalTrafficPolicy: Local
+  selector:
+    {{- include "online-food-app-backend.selectorLabels" . | nindent 4 }}

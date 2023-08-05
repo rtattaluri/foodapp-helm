@@ -1,0 +1,29 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "update-db-for-menuitems.fullname" . }}
+  labels:
+    {{- include "update-db-for-menuitems.labels" . | nindent 4 }}
+spec:
+  replicas: 1
+  template:
+    spec:
+      restartPolicy: "Never"
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+          - name: "DB_HOST"
+            value: "bitnami-mysql"
+          - name: "DB_PORT"
+            value: "3306"
+          - name: "DB_USER"
+            value: "root"
+          - name: "DB_PASSWORD"
+            value: "secret"
+          - name: "DATABASE"
+            value: "db_restaurant"
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+       
